@@ -1,3 +1,6 @@
+### Practical 3 --------------------------------
+
+# Libraries
 import numpy as np
 
 # Follow the tasks below to practice basic Python concepts.
@@ -16,15 +19,15 @@ import numpy as np
 # -----------------------------------------------
 
 def compute_output_size_1d(input_array, kernel_array):
-    pass
-
+    len_input  = len(input_array)
+    len_kernel = len(kernel_array)
+    return len_input - len_kernel + 1
 
 # -----------------------------------------------
 # Example:
 input_array = np.array([1, 2, 3, 4, 5])
 kernel_array = np.array([1, 0, -1])
 print(compute_output_size_1d(input_array, kernel_array))
-
 
 # Task 2: 1D Convolution
 # Instructions:
@@ -37,7 +40,10 @@ print(compute_output_size_1d(input_array, kernel_array))
 def convolve_1d(input_array, kernel_array):
     # Tip: start by initializing an empty output array (you can use your function above to calculate the correct size).
     # Then fill the cells in the array with a loop.
-    pass
+    conv = np.array([0] * compute_output_size_1d(input_array, kernel_array))
+    for i in range(len(conv)):
+        conv[i] = np.sum(input_array[i:i+len(kernel_array)] * kernel_array)
+    return conv
 
 # -----------------------------------------------
 # Another tip: write test cases like this, so you can easily test your function.
@@ -56,11 +62,17 @@ print(convolve_1d(input_array, kernel_array))
 # -----------------------------------------------
 
 def compute_output_size_2d(input_matrix, kernel_matrix):
-    pass
-
+    inp_h = input_matrix.shape[0]
+    ker_h = kernel_matrix.shape[0]
+    inp_w = input_matrix.shape[1]
+    ker_w = kernel_matrix.shape[1]
+    return (inp_h - ker_h + 1, inp_w - ker_w + 1)
 
 # -----------------------------------------------
-
+# Test
+input_array = np.array([[1, 2, 3], [4, 5, 6]])
+kernel_array = np.array([[1, 0], [0, -1]])
+print(compute_output_size_2d(input_array, kernel_array))
 
 # Task 4: 2D Convolution
 # Instructions:
@@ -72,7 +84,15 @@ def compute_output_size_2d(input_matrix, kernel_matrix):
 def convolute_2d(input_matrix, kernel_matrix):
     # Tip: same tips as above, but you might need a nested loop here in order to
     # define which parts of the input matrix need to be multiplied with the kernel matrix.
-    pass
-
+    tup_dim = compute_output_size_2d(input_matrix, kernel_matrix)
+    conv = np.zeros(tup_dim)
+    for i in range(tup_dim[0]):
+        for j in range(tup_dim[1]):
+            conv[i, j] = np.sum(input_matrix[i:i+kernel_matrix.shape[0], j:j+kernel_matrix.shape[1]] * kernel_matrix)
+    return conv
 
 # -----------------------------------------------
+# Test
+input_array = np.array([[1, 2, 3], [4, 5, 6]])
+kernel_array = np.array([[1, 0], [0, -1]])
+print(convolute_2d(input_array, kernel_array))
